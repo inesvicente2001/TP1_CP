@@ -49,10 +49,10 @@ bool atribute_sample(float * clN, struct point point[N], struct cluster cluster[
 
     for (i = 0; i < N; i++) {
 
-        minor_dist = sqrtf(powf(point[i].x - cluster[0].x, 2) + powf(point[i].y - cluster[0].y, 2));
+        minor_dist = powf(point[i].x - cluster[0].x, 2) + powf(point[i].y - cluster[0].y, 2);
         minor_cluster = 0;
         for (j = 1; j < K; j++) {
-            dist = sqrtf(powf(point[i].x - cluster[j].x, 2) + powf(point[i].y - cluster[j].y, 2));
+            dist = powf(point[i].x - cluster[j].x, 2) + powf(point[i].y - cluster[j].y, 2);
             bool_dist = dist < minor_dist;
             minor_dist = bool_dist ? dist : minor_dist;
             minor_cluster = bool_dist ? j : minor_cluster;
@@ -97,6 +97,7 @@ int main() {
 
     for (i = 0; i < K; i++) {
         printf("Center: (%.3f, %.3f) : Size: %.0f\n", cluster[i].x, cluster[i].y, clN[i]);
+        printf("%d\n", hh);
     }
 
     return 0;
