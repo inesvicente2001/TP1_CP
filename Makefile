@@ -4,7 +4,7 @@ SRC = src/
 INCLUDES = include/
 EXEC = k_means
 
-CFLAGS = -O2 -g -lm -Wall -Wextra -Wdouble-promotion -pedantic-errors -Wconversion
+CFLAGS = -O2 -g -lm -Wall -Wextra -Wdouble-promotion -pedantic-errors -Wconversion -march=native -ftree-vectorize
 
 .DEFAULT_GOAL = k_means
 

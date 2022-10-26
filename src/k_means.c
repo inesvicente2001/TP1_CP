@@ -31,14 +31,14 @@ void init_k_clusters(struct point point[N], struct cluster cluster[K]) {
     }
 }
 
-bool atribute_sample(float * clN, struct point point[N], struct cluster cluster[K]) {
+bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
     
     int i, j;
 
-    float clx[K], cly[K];
+    float clx[K], cly[K], clN[K];
     float minor_dist, dist;
     int minor_cluster;
-    bool bool_dist;
+    //bool bool_dist;
     bool end = true;
 
     for (i = 0 ; i < K ; i++) {
@@ -49,13 +49,17 @@ bool atribute_sample(float * clN, struct point point[N], struct cluster cluster[
 
     for (i = 0; i < N; i++) {
 
-        minor_dist = powf(point[i].x - cluster[0].x, 2) + powf(point[i].y - cluster[0].y, 2);
+        minor_dist = (point[i].x - cluster[0].x) * (point[i].x - cluster[0].x) + (point[i].y - cluster[0].y) * (point[i].y - cluster[0].y);
         minor_cluster = 0;
         for (j = 1; j < K; j++) {
-            dist = powf(point[i].x - cluster[j].x, 2) + powf(point[i].y - cluster[j].y, 2);
-            bool_dist = dist < minor_dist;
-            minor_dist = bool_dist ? dist : minor_dist;
-            minor_cluster = bool_dist ? j : minor_cluster;
+            dist = (point[i].x - cluster[j].x) * (point[i].x - cluster[j].x) + (point[i].y - cluster[j].y) * (point[i].y - cluster[j].y);
+            if(dist < minor_dist){
+                minor_dist = dist;
+                minor_cluster = j;
+            }
+            //bool_dist = dist < minor_dist;
+            //minor_dist = bool_dist ? dist : minor_dist;
+            //minor_cluster = bool_dist ? j : minor_cluster;
         }
         clN[minor_cluster]++;
         clx[minor_cluster] += point[i].x;
@@ -81,7 +85,7 @@ int main() {
     struct point * point = malloc(sizeof(struct point) * N);
     struct cluster * cluster = malloc(sizeof(struct cluster) * K);
 
-    float * clN = malloc(sizeof(int) * K);
+    //float * clN = malloc(sizeof(int) * K);
 
     init_vector(point);
 
@@ -92,11 +96,11 @@ int main() {
 
     while (!end) {
         hh++;
-        end = atribute_sample(clN, point, cluster);
+        end = atribute_sample(point, cluster);
     }
 
     for (i = 0; i < K; i++) {
-        printf("Center: (%.3f, %.3f) : Size: %.0f\n", cluster[i].x, cluster[i].y, clN[i]);
+        printf("Center: (%.3f, %.3f) : Size: e\n", cluster[i].x, cluster[i].y);
         printf("%d\n", hh);
     }
 
