@@ -8,12 +8,12 @@ CFLAGS = -O2 -g -lm -Wall -Wextra -Wdouble-promotion -pedantic-errors -Wconversi
 
 .DEFAULT_GOAL = k_means
 
-k_means: $(SRC)k_means.c 
-    -p bin
-    $(CC) $(CFLAGS) $(SRC)k_means.c -o $(BIN)$(EXEC)
+k_means: $(SRC)k_means.c
+	-p bin
+	$(CC) $(CFLAGS) $(SRC)k_means.c -o $(BIN)$(EXEC)
 
 clean:
-    rm -r bin/*
+	rm -r bin/*
 
 run:
-    ./$(BIN)$(EXEC)
+	./$(BIN)$(EXEC)
