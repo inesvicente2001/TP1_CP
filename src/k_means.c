@@ -34,6 +34,7 @@ void init_k_clusters(struct point point[N], struct cluster cluster[K]) {
 bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
     
     int i, j;
+    float pointix, clusterjx, pointiy, clusterjy;
 
     float clx[K], cly[K], clN[K];
     float minor_dist, dist;
@@ -49,10 +50,18 @@ bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
 
     for (i = 0; i < N; i++) {
 
-        minor_dist = (point[i].x - cluster[0].x) * (point[i].x - cluster[0].x) + (point[i].y - cluster[0].y) * (point[i].y - cluster[0].y);
+        pointix = point[i].x;
+        pointiy = point[i].y;
+        clusterjx = cluster[0].x;
+        clusterjy = cluster[0].y;
+        minor_dist = (pointix - clusterjx) * (pointix - clusterjx) + (pointiy - clusterjy) * (pointiy - clusterjy);
+        //minor_dist = (point[i].x - cluster[0].x) * (point[i].x - cluster[0].x) + (point[i].y - cluster[0].y) * (point[i].y - cluster[0].y);
         minor_cluster = 0;
         for (j = 1; j < K; j++) {
-            dist = (point[i].x - cluster[j].x) * (point[i].x - cluster[j].x) + (point[i].y - cluster[j].y) * (point[i].y - cluster[j].y);
+            clusterjx = cluster[j].x;
+            clusterjy = cluster[j].y;
+            dist = (pointix - clusterjx) * (pointix - clusterjx) + (pointiy - clusterjy) * (pointiy - clusterjy);
+            //dist = (point[i].x - cluster[j].x) * (point[i].x - cluster[j].x) + (point[i].y - cluster[j].y) * (point[i].y - cluster[j].y);
             if(dist < minor_dist){
                 minor_dist = dist;
                 minor_cluster = j;
@@ -62,8 +71,10 @@ bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
             //minor_cluster = bool_dist ? j : minor_cluster;
         }
         clN[minor_cluster]++;
-        clx[minor_cluster] += point[i].x;
-        cly[minor_cluster] += point[i].y;
+        clx[minor_cluster] += pointix;
+        cly[minor_cluster] += pointiy;
+        //clx[minor_cluster] += point[i].x;
+        //cly[minor_cluster] += point[i].y;
 
         if (point[i].cluster != minor_cluster) {
             end = false;
