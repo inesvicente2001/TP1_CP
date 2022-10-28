@@ -4,16 +4,15 @@ SRC = src/
 INCLUDES = include/
 EXEC = k_means
 
-CFLAGS = -O2 -g -lm -Wall -Wextra -Wdouble-promotion -pedantic-errors -Wconversion -march=native -ftree-vectorize
+CFLAGS = -O2 -g -lm -Wall -Wextra -Wdouble-promotion -pedantic-errors -Wconversion -ftree-vectorize -funroll-loops
 
 .DEFAULT_GOAL = k_means
 
-k_means: $(SRC)k_means.c 
-    -p bin
-    $(CC) $(CFLAGS) $(SRC)k_means.c -o $(BIN)$(EXEC)
+k_means: $(SRC)k_means.c
+	$(CC) $(CFLAGS) $(SRC)k_means.c -o $(BIN)$(EXEC)
 
 clean:
-    rm -r bin/*
+	rm -r bin/*
 
 run:
-    ./$(BIN)$(EXEC)
+	./$(BIN)$(EXEC)

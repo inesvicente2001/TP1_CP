@@ -9,7 +9,7 @@
 
 void init_vector(struct point point[N]) {
 
-    int i;
+    size_t i;
 
     srand(10);
 
@@ -23,7 +23,7 @@ void init_vector(struct point point[N]) {
 
 void init_k_clusters(struct point point[N], struct cluster cluster[K]) {
 
-    int i;
+    size_t i;
 
     for(i = 0; i < K; i++) {
         cluster[i].x = point[i].x;
@@ -33,13 +33,13 @@ void init_k_clusters(struct point point[N], struct cluster cluster[K]) {
 
 bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
     
-    int i, j;
+    size_t i;
+    short int j;
     float pointix, clusterjx, pointiy, clusterjy;
 
     float clx[K], cly[K], clN[K];
     float minor_dist, dist;
-    int minor_cluster;
-    //bool bool_dist;
+    short int minor_cluster;
     bool end = true;
 
     for (i = 0 ; i < K ; i++) {
@@ -55,26 +55,19 @@ bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
         clusterjx = cluster[0].x;
         clusterjy = cluster[0].y;
         minor_dist = (pointix - clusterjx) * (pointix - clusterjx) + (pointiy - clusterjy) * (pointiy - clusterjy);
-        //minor_dist = (point[i].x - cluster[0].x) * (point[i].x - cluster[0].x) + (point[i].y - cluster[0].y) * (point[i].y - cluster[0].y);
         minor_cluster = 0;
         for (j = 1; j < K; j++) {
             clusterjx = cluster[j].x;
             clusterjy = cluster[j].y;
             dist = (pointix - clusterjx) * (pointix - clusterjx) + (pointiy - clusterjy) * (pointiy - clusterjy);
-            //dist = (point[i].x - cluster[j].x) * (point[i].x - cluster[j].x) + (point[i].y - cluster[j].y) * (point[i].y - cluster[j].y);
             if(dist < minor_dist){
                 minor_dist = dist;
                 minor_cluster = j;
             }
-            //bool_dist = dist < minor_dist;
-            //minor_dist = bool_dist ? dist : minor_dist;
-            //minor_cluster = bool_dist ? j : minor_cluster;
         }
         clN[minor_cluster]++;
         clx[minor_cluster] += pointix;
         cly[minor_cluster] += pointiy;
-        //clx[minor_cluster] += point[i].x;
-        //cly[minor_cluster] += point[i].y;
 
         if (point[i].cluster != minor_cluster) {
             end = false;
@@ -91,19 +84,18 @@ bool atribute_sample(struct point point[N], struct cluster cluster[K]) {
 }
 
 int main() {
-    int i;
+    size_t i;
 
     struct point * point = malloc(sizeof(struct point) * N);
     struct cluster * cluster = malloc(sizeof(struct cluster) * K);
 
-    //float * clN = malloc(sizeof(int) * K);
-
     init_vector(point);
 
+    //coloca os valores x e y dos primeiros K pontos na estrutura dos cluster
     init_k_clusters(point, cluster);
 
-    bool end = 0;
-    int hh=0;
+    bool end = 0; //flag que indica se já convergiu
+    size_t hh = 0; //número de iterações
 
     while (!end) {
         hh++;
